@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin: 0 auto;
+        max-width: 1200px;
+        padding: 20px;
+    }
+
+    .team {
+        background-color: #1e90ff; /* Cor vibrante */
+        color: white;
+        width: 300px;
+        height: 250px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.2em;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s, box-shadow 0.3s;
+        padding-right: 20px; /* Adicionado para espaço interno */
+        padding-left: 15px;
+    }
+
+    .team:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+    }
+
+    .team a {
+        text-decoration: none;
+    }
+
+    .team a:hover {
+        text-decoration: none;
+    }
+
+    .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .search-bar input {
+        padding: 5px;
+
+        border-radius: 5px;
+    }
+
+    .search-bar button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #104e8b; /* Azul Escuro */
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .search-bar button:hover {
+        background-color: #0b3d91; /* Azul ainda mais escuro */
+    }
+</style>
+
+<body>
+    <div class="search-bar">
+        <form method="GET" action="{% url 'teams_list' %}">
+            <input type="text" name="search" placeholder="Buscar item...">
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+    {% if teams %}
+        <div class="container">
+            {% for team in teams %}
+            <a href="{% url 'teams_detail' team.pk %}">
+                <div class="team">
+                    <span>{{ team.team }}</span>
+                    {% if team.photo %}
+                    <img src="{{ team.photo.url }}" alt="" width="120" height="120">
+                    {% else %}
+                        <p>Foto não disponível</p>
+                    {% endif %}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Nenhum time encontrado.</p>
+    {% endif %}
+</body>
+{% endblock %}
